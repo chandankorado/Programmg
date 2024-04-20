@@ -1,0 +1,543 @@
+mysql> use data
+Database changed
+mysql> show tables;
++----------------+
+| Tables_in_data |
++----------------+
+| department     |
+| dependent      |
+| employee       |
+| project        |
++----------------+
+4 rows in set (0.00 sec)
+
+mysql> desc employee;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| Fname       | char(10)      | NO   |     | NULL    |       |
+| Lname       | char(20)      | NO   |     | NULL    |       |
+| ssn         | varchar(10)   | NO   | PRI | NULL    |       |
+| Age         | int(11)       | YES  |     | NULL    |       |
+| DOB         | date          | YES  |     | NULL    |       |
+| Gender      | enum('M','F') | YES  |     | NULL    |       |
+| salary      | float         | YES  |     | NULL    |       |
+| PHNO        | varchar(10)   | YES  |     | NULL    |       |
+| address     | varchar(120)  | NO   |     | NULL    |       |
+| designation | varchar(10)   | YES  |     | NULL    |       |
+| Dnum        | int(11)       | YES  | MUL | NULL    |       |
+| sssn        | varchar(10)   | YES  | MUL | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+12 rows in set (0.02 sec)
+
+mysql> desc department;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| Dname         | char(20)    | YES  |     | NULL    |       |
+| Dnum          | int(11)     | NO   | PRI | 0       |       |
+| starting_data | date        | YES  |     | NULL    |       |
+| manager_ssn   | varchar(10) | YES  | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> desc project;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Pname     | char(20)    | YES  |     | NULL    |       |
+| Pid       | int(11)     | NO   | PRI | 0       |       |
+| Plocation | varchar(20) | YES  |     | NULL    |       |
+| Dnum      | int(11)     | YES  | MUL | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.07 sec)
+
+mysql> desc dependent;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Dep_name    | varchar(20) | YES  |     | NULL    |       |
+| Dep_address | varchar(50) | YES  |     | NULL    |       |
+| Dep_id      | varchar(10) | YES  |     | NULL    |       |
+| essn        | varchar(10) | YES  | MUL | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.07 sec)
+
+mysql> select *from employee;
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Fname     | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address       | designation | Dnum | sssn    |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Tendela   | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam    | Manager     | 1122 | S160001 |
+| Tendela   | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  45000 | 9618602121 | Srikakulam    | Manager     | 1211 | S160001 |
+| Palla     | Gangadhar       | S160336 |   20 | 2000-08-30 | M      |  30000 | 9705753172 | Srikakulam    | Manager     | 1133 | S160001 |
+| Polisetti | Pavani          | S160894 |   20 | 2000-07-26 | F      |  35000 | 7382381171 | East godavari | Assistant   | 1211 | S160001 |
+| Tendela   | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada    | Assmanager  | 1133 | S160911 |
+| Pilli     | Lokesh          | S161293 |   18 | 2002-11-26 | M      |  50000 | 9618602121 | Srikakulam    | Manager     | 1133 | S160911 |
+| Gubbala   | Sri satya       | S161500 |   19 | 2001-06-06 | F      |  30000 | 8074489245 | East godavari | Assistant   | 3311 | S160911 |
+| Akkapolu  | Bhavani         | S161965 |   19 | 2001-03-26 | F      |  35000 | 9705753172 | Vizag         | manager     | 2233 | S160911 |
+| Pilli     | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  40000 | 8096929526 | Srikakulam    | Manager     | 1211 | S161966 |
+| Annepu    | Sandhya rani    | S162056 |   19 | 2001-08-21 | F      |  25000 | 8179296404 | Hyderabad     | Assistant   | 1122 | S161966 |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+10 rows in set (0.00 sec)
+
+mysql> select *from department;
++------------------+------+---------------+-------------+
+| Dname            | Dnum | starting_data | manager_ssn |
++------------------+------+---------------+-------------+
+| civil            | 1122 | 1995-03-26    | S160001     |
+| mechanical       | 1133 | 1996-09-11    | S160911     |
+| computer science | 1211 | 1999-03-02    | S161966     |
+| chemical         | 2233 | 1996-09-11    | S160032     |
+| Electronic       | 3311 | 1999-03-02    | S161965     |
++------------------+------+---------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select *from project;
++-----------------+-----+-----------+------+
+| Pname           | Pid | Plocation | Dnum |
++-----------------+-----+-----------+------+
+| Big data        | 111 | Hyderabad | 1211 |
+| Robotics        | 112 | Mumbai    | 3311 |
+| Drip irrigation | 113 | Hyderabad | 1122 |
+| AI              | 114 | Delhi     | 1211 |
+| IOT             | 115 | AP        | 1133 |
+| Big data        | 116 | Mumbai    | 3311 |
+| Robotics        | 117 | Hyderabad | 1133 |
+| AI              | 118 | AP        | 3311 |
+| solar           | 119 | chennai   | 1122 |
+| Android         | 120 | Delhi     | 1211 |
++-----------------+-----+-----------+------+
+10 rows in set (0.00 sec)
+
+mysql> select *from dependent;
++--------------+---------------+---------+---------+
+| Dep_name     | Dep_address   | Dep_id  | essn    |
++--------------+---------------+---------+---------+
+| Santosh      | srikakulam    | S170001 | S160001 |
+| Santosh      | srikakulam    | S170002 | S160911 |
+| Somesh       | vizag         | S170003 | S161966 |
+| Harika       | vizag         | S170004 | S161966 |
+| vijay kumar  | vijayanagaram | S170005 | S160001 |
+| Lava kumar   | Eluru         | S170006 | S160001 |
+| Padma priya  | Hyderabad     | S170007 | S160911 |
+| Harsha priya | Hyderabad     | S170008 | S160032 |
+| Aruna jyothi | Eluru         | S170009 | S160032 |
++--------------+---------------+---------+---------+
+9 rows in set (0.00 sec)
+
+mysql> select *from employee where Fname='Pilli' and Lname='Priyanka';
++-------+----------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+
+| Fname | Lname    | ssn     | Age  | DOB        | Gender | salary | PHNO       | address    | designation | Dnum | sssn    |
++-------+----------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+
+| Pilli | Priyanka | S161966 |   19 | 2001-07-04 | F      |  40000 | 8096929526 | Srikakulam | Manager     | 1211 | S161966 |
++-------+----------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+
+1 row in set (0.00 sec)
+
+mysql> select Fname,Lname,address from employee,department where employee.Dnum=department.Dnum and Dname='computer science';
++-----------+------------+---------------+
+| Fname     | Lname      | address       |
++-----------+------------+---------------+
+| Tendela   | Mohan babu | Srikakulam    |
+| Polisetti | Pavani     | East godavari |
+| Pilli     | Priyanka   | Srikakulam    |
++-----------+------------+---------------+
+3 rows in set (0.03 sec)
+
+mysql> select *from employee;
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Fname     | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address       | designation | Dnum | sssn    |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Tendela   | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam    | Manager     | 1122 | S160001 |
+| Tendela   | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  45000 | 9618602121 | Srikakulam    | Manager     | 1211 | S160001 |
+| Palla     | Gangadhar       | S160336 |   20 | 2000-08-30 | M      |  30000 | 9705753172 | Srikakulam    | Manager     | 1133 | S160001 |
+| Polisetti | Pavani          | S160894 |   20 | 2000-07-26 | F      |  35000 | 7382381171 | East godavari | Assistant   | 1211 | S160001 |
+| Tendela   | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada    | Assmanager  | 1133 | S160911 |
+| Pilli     | Lokesh          | S161293 |   18 | 2002-11-26 | M      |  50000 | 9618602121 | Srikakulam    | Manager     | 1133 | S160911 |
+| Gubbala   | Sri satya       | S161500 |   19 | 2001-06-06 | F      |  30000 | 8074489245 | East godavari | Assistant   | 3311 | S160911 |
+| Akkapolu  | Bhavani         | S161965 |   19 | 2001-03-26 | F      |  35000 | 9705753172 | Vizag         | manager     | 2233 | S160911 |
+| Pilli     | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  40000 | 8096929526 | Srikakulam    | Manager     | 1211 | S161966 |
+| Annepu    | Sandhya rani    | S162056 |   19 | 2001-08-21 | F      |  25000 | 8179296404 | Hyderabad     | Assistant   | 1122 | S161966 |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+10 rows in set (0.00 sec)
+
+mysql> select P.Pid,P.Pname,D.Dnum,D.Dname,D.manager_ssn,E.Fname,E.Lname,P.Plocation from employee E,department D,project P,where Plocation='Hyderabad' and P.Dnum=D.Dnum and D.manager_ssn=E.ssn;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where Plocation='Hyderabad' and P.Dnum=D.Dnum and D.manager_ssn=E.ssn' at line 1
+mysql> select P.Pid,P.Pname,D.Dnum,D.Dname,D.manager_ssn,E.Fname,E.Lname,P.Plocation from employee E,department D,project P where Plocation='Hyderabad' and P.Dnum=D.Dnum and D.manager_ssn=E.ssn;
++-----+-----------------+------+------------------+-------------+---------+-----------------+-----------+
+| Pid | Pname           | Dnum | Dname            | manager_ssn | Fname   | Lname           | Plocation |
++-----+-----------------+------+------------------+-------------+---------+-----------------+-----------+
+| 113 | Drip irrigation | 1122 | civil            | S160001     | Tendela | Suneetha kumari | Hyderabad |
+| 117 | Robotics        | 1133 | mechanical       | S160911     | Tendela | Lokesh          | Hyderabad |
+| 111 | Big data        | 1211 | computer science | S161966     | Pilli   | Priyanka        | Hyderabad |
++-----+-----------------+------+------------------+-------------+---------+-----------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select *from project;
++-----------------+-----+-----------+------+
+| Pname           | Pid | Plocation | Dnum |
++-----------------+-----+-----------+------+
+| Big data        | 111 | Hyderabad | 1211 |
+| Robotics        | 112 | Mumbai    | 3311 |
+| Drip irrigation | 113 | Hyderabad | 1122 |
+| AI              | 114 | Delhi     | 1211 |
+| IOT             | 115 | AP        | 1133 |
+| Big data        | 116 | Mumbai    | 3311 |
+| Robotics        | 117 | Hyderabad | 1133 |
+| AI              | 118 | AP        | 3311 |
+| solar           | 119 | chennai   | 1122 |
+| Android         | 120 | Delhi     | 1211 |
++-----------------+-----+-----------+------+
+10 rows in set (0.00 sec)
+
+mysql> select DISTINCT salary from employee;
++--------+
+| salary |
++--------+
+|  55000 |
+|  45000 |
+|  30000 |
+|  35000 |
+|  50000 |
+|  40000 |
+|  25000 |
++--------+
+7 rows in set (0.02 sec)
+
+mysql> select * from employee GROUP BY DISTINCT salary;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DISTINCT salary' at line 1
+mysql> select *from employee GROUP BY salary;
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Fname     | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address       | designation | Dnum | sssn    |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Annepu    | Sandhya rani    | S162056 |   19 | 2001-08-21 | F      |  25000 | 8179296404 | Hyderabad     | Assistant   | 1122 | S161966 |
+| Palla     | Gangadhar       | S160336 |   20 | 2000-08-30 | M      |  30000 | 9705753172 | Srikakulam    | Manager     | 1133 | S160001 |
+| Polisetti | Pavani          | S160894 |   20 | 2000-07-26 | F      |  35000 | 7382381171 | East godavari | Assistant   | 1211 | S160001 |
+| Pilli     | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  40000 | 8096929526 | Srikakulam    | Manager     | 1211 | S161966 |
+| Tendela   | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  45000 | 9618602121 | Srikakulam    | Manager     | 1211 | S160001 |
+| Pilli     | Lokesh          | S161293 |   18 | 2002-11-26 | M      |  50000 | 9618602121 | Srikakulam    | Manager     | 1133 | S160911 |
+| Tendela   | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam    | Manager     | 1122 | S160001 |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+7 rows in set (0.05 sec)
+
+mysql> select A.*from employee A,employee B where A.salary<>B.salary group by salary;
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Fname     | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address       | designation | Dnum | sssn    |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Annepu    | Sandhya rani    | S162056 |   19 | 2001-08-21 | F      |  25000 | 8179296404 | Hyderabad     | Assistant   | 1122 | S161966 |
+| Palla     | Gangadhar       | S160336 |   20 | 2000-08-30 | M      |  30000 | 9705753172 | Srikakulam    | Manager     | 1133 | S160001 |
+| Polisetti | Pavani          | S160894 |   20 | 2000-07-26 | F      |  35000 | 7382381171 | East godavari | Assistant   | 1211 | S160001 |
+| Pilli     | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  40000 | 8096929526 | Srikakulam    | Manager     | 1211 | S161966 |
+| Tendela   | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  45000 | 9618602121 | Srikakulam    | Manager     | 1211 | S160001 |
+| Pilli     | Lokesh          | S161293 |   18 | 2002-11-26 | M      |  50000 | 9618602121 | Srikakulam    | Manager     | 1133 | S160911 |
+| Tendela   | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam    | Manager     | 1122 | S160001 |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+7 rows in set (0.03 sec)
+
+mysql> select *from employee where Lname LIKE "%Lokesh% and Fname LIKE "T%";
+    "> ";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'T%";
+"' at line 1
+mysql> select *from employee where Lname LIKE "%Lokesh%" and Fname LIKE "T%";
++---------+--------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+
+| Fname   | Lname  | ssn     | Age  | DOB        | Gender | salary | PHNO       | address    | designation | Dnum | sssn    |
++---------+--------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+
+| Tendela | Lokesh | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada | Assmanager  | 1133 | S160911 |
++---------+--------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+
+1 row in set (0.03 sec)
+
+mysql> SELECT *FROM EMPLOYEE;
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Fname     | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address       | designation | Dnum | sssn    |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Tendela   | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam    | Manager     | 1122 | S160001 |
+| Tendela   | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  45000 | 9618602121 | Srikakulam    | Manager     | 1211 | S160001 |
+| Palla     | Gangadhar       | S160336 |   20 | 2000-08-30 | M      |  30000 | 9705753172 | Srikakulam    | Manager     | 1133 | S160001 |
+| Polisetti | Pavani          | S160894 |   20 | 2000-07-26 | F      |  35000 | 7382381171 | East godavari | Assistant   | 1211 | S160001 |
+| Tendela   | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada    | Assmanager  | 1133 | S160911 |
+| Pilli     | Lokesh          | S161293 |   18 | 2002-11-26 | M      |  50000 | 9618602121 | Srikakulam    | Manager     | 1133 | S160911 |
+| Gubbala   | Sri satya       | S161500 |   19 | 2001-06-06 | F      |  30000 | 8074489245 | East godavari | Assistant   | 3311 | S160911 |
+| Akkapolu  | Bhavani         | S161965 |   19 | 2001-03-26 | F      |  35000 | 9705753172 | Vizag         | manager     | 2233 | S160911 |
+| Pilli     | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  40000 | 8096929526 | Srikakulam    | Manager     | 1211 | S161966 |
+| Annepu    | Sandhya rani    | S162056 |   19 | 2001-08-21 | F      |  25000 | 8179296404 | Hyderabad     | Assistant   | 1122 | S161966 |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT *FROM DEPARTMENT;
++------------------+------+---------------+-------------+
+| Dname            | Dnum | starting_data | manager_ssn |
++------------------+------+---------------+-------------+
+| civil            | 1122 | 1995-03-26    | S160001     |
+| mechanical       | 1133 | 1996-09-11    | S160911     |
+| computer science | 1211 | 1999-03-02    | S161966     |
+| chemical         | 2233 | 1996-09-11    | S160032     |
+| Electronic       | 3311 | 1999-03-02    | S161965     |
++------------------+------+---------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Fname,Lname,salary from employee where Dnum=1211 and salary BETWEEN 40000 AND 45000;
++---------+------------+--------+
+| Fname   | Lname      | salary |
++---------+------------+--------+
+| Tendela | Mohan babu |  45000 |
+| Pilli   | Priyanka   |  40000 |
++---------+------------+--------+
+2 rows in set (0.04 sec)
+
+mysql> SELECT Fname,Lname,salary from employee where Dnum=1211 and salary BETWEEN 20000 AND 30000;
+Empty set (0.00 sec)
+
+
+mysql> update employee, department set salary=salary+(salary*0.15) where employee.Dnum=department.Dnum and Dname='computer science';
+Query OK, 3 rows affected (0.11 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select *from employee,department where employee.Dnum=department.Dnum and Dname='computer science';
++-----------+------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+------------------+------+---------------+-------------+
+| Fname     | Lname      | ssn     | Age  | DOB        | Gender | salary | PHNO       | address       | designation | Dnum | sssn    | Dname            | Dnum | starting_data | manager_ssn |
++-----------+------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+------------------+------+---------------+-------------+
+| Tendela   | Mohan babu | S160032 |   21 | 1999-03-02 | M      |  51750 | 9618602121 | Srikakulam    | Manager     | 1211 | S160001 | computer science | 1211 | 1999-03-02    | S161966     |
+| Polisetti | Pavani     | S160894 |   20 | 2000-07-26 | F      |  40250 | 7382381171 | East godavari | Assistant   | 1211 | S160001 | computer science | 1211 | 1999-03-02    | S161966     |
+| Pilli     | Priyanka   | S161966 |   19 | 2001-07-04 | F      |  46000 | 8096929526 | Srikakulam    | Manager     | 1211 | S161966 | computer science | 1211 | 1999-03-02    | S161966     |
++-----------+------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+------------------+------+---------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select Fname,Lname,salary from employee, department where employee.Dnum=department.Dnum and Dname='computer science';
++-----------+------------+--------+
+| Fname     | Lname      | salary |
++-----------+------------+--------+
+| Tendela   | Mohan babu |  51750 |
+| Polisetti | Pavani     |  40250 |
+| Pilli     | Priyanka   |  46000 |
++-----------+------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select *from employee;
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Fname     | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address       | designation | Dnum | sssn    |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Tendela   | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam    | Manager     | 1122 | S160001 |
+| Tendela   | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  51750 | 9618602121 | Srikakulam    | Manager     | 1211 | S160001 |
+| Palla     | Gangadhar       | S160336 |   20 | 2000-08-30 | M      |  30000 | 9705753172 | Srikakulam    | Manager     | 1133 | S160001 |
+| Polisetti | Pavani          | S160894 |   20 | 2000-07-26 | F      |  40250 | 7382381171 | East godavari | Assistant   | 1211 | S160001 |
+| Tendela   | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada    | Assmanager  | 1133 | S160911 |
+| Pilli     | Lokesh          | S161293 |   18 | 2002-11-26 | M      |  50000 | 9618602121 | Srikakulam    | Manager     | 1133 | S160911 |
+| Gubbala   | Sri satya       | S161500 |   19 | 2001-06-06 | F      |  30000 | 8074489245 | East godavari | Assistant   | 3311 | S160911 |
+| Akkapolu  | Bhavani         | S161965 |   19 | 2001-03-26 | F      |  35000 | 9705753172 | Vizag         | manager     | 2233 | S160911 |
+| Pilli     | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  46000 | 8096929526 | Srikakulam    | Manager     | 1211 | S161966 |
+| Annepu    | Sandhya rani    | S162056 |   19 | 2001-08-21 | F      |  25000 | 8179296404 | Hyderabad     | Assistant   | 1122 | S161966 |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+10 rows in set (0.00 sec)
+
+mysql> select *from employee,department where employee.Dnum=department.Dnum ORDER BY Dname;
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+------------------+------+---------------+-------------+
+| Fname     | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address       | designation | Dnum | sssn    | Dname            | Dnum | starting_data | manager_ssn |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+------------------+------+---------------+-------------+
+| Akkapolu  | Bhavani         | S161965 |   19 | 2001-03-26 | F      |  35000 | 9705753172 | Vizag         | manager     | 2233 | S160911 | chemical         | 2233 | 1996-09-11    | S160032     |
+| Tendela   | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam    | Manager     | 1122 | S160001 | civil            | 1122 | 1995-03-26    | S160001     |
+| Annepu    | Sandhya rani    | S162056 |   19 | 2001-08-21 | F      |  25000 | 8179296404 | Hyderabad     | Assistant   | 1122 | S161966 | civil            | 1122 | 1995-03-26    | S160001     |
+| Tendela   | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  51750 | 9618602121 | Srikakulam    | Manager     | 1211 | S160001 | computer science | 1211 | 1999-03-02    | S161966     |
+| Polisetti | Pavani          | S160894 |   20 | 2000-07-26 | F      |  40250 | 7382381171 | East godavari | Assistant   | 1211 | S160001 | computer science | 1211 | 1999-03-02    | S161966     |
+| Pilli     | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  46000 | 8096929526 | Srikakulam    | Manager     | 1211 | S161966 | computer science | 1211 | 1999-03-02    | S161966     |
+| Gubbala   | Sri satya       | S161500 |   19 | 2001-06-06 | F      |  30000 | 8074489245 | East godavari | Assistant   | 3311 | S160911 | Electronic       | 3311 | 1999-03-02    | S161965     |
+| Palla     | Gangadhar       | S160336 |   20 | 2000-08-30 | M      |  30000 | 9705753172 | Srikakulam    | Manager     | 1133 | S160001 | mechanical       | 1133 | 1996-09-11    | S160911     |
+| Tendela   | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada    | Assmanager  | 1133 | S160911 | mechanical       | 1133 | 1996-09-11    | S160911     |
+| Pilli     | Lokesh          | S161293 |   18 | 2002-11-26 | M      |  50000 | 9618602121 | Srikakulam    | Manager     | 1133 | S160911 | mechanical       | 1133 | 1996-09-11    | S160911     |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+------------------+------+---------------+-------------+
+10 rows in set (0.03 sec)
+
+mysql> select E.*FROM employee E,department where E.Dnum=department.Dnum OREDER BY Dname;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'OREDER BY Dname' at line 1
+mysql> select E.* FROM employee E,department where E.Dnum=department.Dnum OREDER BY Dname;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'OREDER BY Dname' at line 1
+mysql> select E.* FROM employee E,department where E.Dnum=department.Dnum ORDER BY Dname;
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Fname     | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address       | designation | Dnum | sssn    |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Akkapolu  | Bhavani         | S161965 |   19 | 2001-03-26 | F      |  35000 | 9705753172 | Vizag         | manager     | 2233 | S160911 |
+| Tendela   | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam    | Manager     | 1122 | S160001 |
+| Annepu    | Sandhya rani    | S162056 |   19 | 2001-08-21 | F      |  25000 | 8179296404 | Hyderabad     | Assistant   | 1122 | S161966 |
+| Tendela   | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  51750 | 9618602121 | Srikakulam    | Manager     | 1211 | S160001 |
+| Polisetti | Pavani          | S160894 |   20 | 2000-07-26 | F      |  40250 | 7382381171 | East godavari | Assistant   | 1211 | S160001 |
+| Pilli     | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  46000 | 8096929526 | Srikakulam    | Manager     | 1211 | S161966 |
+| Gubbala   | Sri satya       | S161500 |   19 | 2001-06-06 | F      |  30000 | 8074489245 | East godavari | Assistant   | 3311 | S160911 |
+| Palla     | Gangadhar       | S160336 |   20 | 2000-08-30 | M      |  30000 | 9705753172 | Srikakulam    | Manager     | 1133 | S160001 |
+| Tendela   | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada    | Assmanager  | 1133 | S160911 |
+| Pilli     | Lokesh          | S161293 |   18 | 2002-11-26 | M      |  50000 | 9618602121 | Srikakulam    | Manager     | 1133 | S160911 |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+10 rows in set (0.00 sec)
+
+mysql> select E.*,Dname FROM employee E,department where E.Dnum=department.Dnum ORDER BY Dname;
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+------------------+
+| Fname     | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address       | designation | Dnum | sssn    | Dname            |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+------------------+
+| Akkapolu  | Bhavani         | S161965 |   19 | 2001-03-26 | F      |  35000 | 9705753172 | Vizag         | manager     | 2233 | S160911 | chemical         |
+| Tendela   | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam    | Manager     | 1122 | S160001 | civil            |
+| Annepu    | Sandhya rani    | S162056 |   19 | 2001-08-21 | F      |  25000 | 8179296404 | Hyderabad     | Assistant   | 1122 | S161966 | civil            |
+| Tendela   | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  51750 | 9618602121 | Srikakulam    | Manager     | 1211 | S160001 | computer science |
+| Polisetti | Pavani          | S160894 |   20 | 2000-07-26 | F      |  40250 | 7382381171 | East godavari | Assistant   | 1211 | S160001 | computer science |
+| Pilli     | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  46000 | 8096929526 | Srikakulam    | Manager     | 1211 | S161966 | computer science |
+| Gubbala   | Sri satya       | S161500 |   19 | 2001-06-06 | F      |  30000 | 8074489245 | East godavari | Assistant   | 3311 | S160911 | Electronic       |
+| Palla     | Gangadhar       | S160336 |   20 | 2000-08-30 | M      |  30000 | 9705753172 | Srikakulam    | Manager     | 1133 | S160001 | mechanical       |
+| Tendela   | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada    | Assmanager  | 1133 | S160911 | mechanical       |
+| Pilli     | Lokesh          | S161293 |   18 | 2002-11-26 | M      |  50000 | 9618602121 | Srikakulam    | Manager     | 1133 | S160911 | mechanical       |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+------------------+
+10 rows in set (0.00 sec)
+
+mysql> select E.*,P.Dnum,D.name,P.Pid from employee E,department D,project P where P.Dnum=D.Dnum and D.Dnum=E.Dnum P.Dnum=3311;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'P.Dnum=3311' at line 1
+mysql> select E.*,P.Dnum,D.name,P.Pid from employee E,department D,project P where E.Dnum=P.Dnum and E.Dnum=3311 and D.Dnum=P.Dnum;
+ERROR 1054 (42S22): Unknown column 'D.name' in 'field list'
+mysql> select E.*,P.Dnum,D.Dname,P.Pid from employee E,department D,project P where E.Dnum=P.Dnum and E.Dnum=3311 and D.Dnum=P.Dnum;
++---------+-----------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+------+------------+-----+
+| Fname   | Lname     | ssn     | Age  | DOB        | Gender | salary | PHNO       | address       | designation | Dnum | sssn    | Dnum | Dname      | Pid |
++---------+-----------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+------+------------+-----+
+| Gubbala | Sri satya | S161500 |   19 | 2001-06-06 | F      |  30000 | 8074489245 | East godavari | Assistant   | 3311 | S160911 | 3311 | Electronic | 112 |
+| Gubbala | Sri satya | S161500 |   19 | 2001-06-06 | F      |  30000 | 8074489245 | East godavari | Assistant   | 3311 | S160911 | 3311 | Electronic | 116 |
+| Gubbala | Sri satya | S161500 |   19 | 2001-06-06 | F      |  30000 | 8074489245 | East godavari | Assistant   | 3311 | S160911 | 3311 | Electronic | 118 |
++---------+-----------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+------+------------+-----+
+3 rows in set (0.00 sec)
+
+mysql> select *from employee;
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Fname     | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address       | designation | Dnum | sssn    |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+| Tendela   | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam    | Manager     | 1122 | S160001 |
+| Tendela   | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  51750 | 9618602121 | Srikakulam    | Manager     | 1211 | S160001 |
+| Palla     | Gangadhar       | S160336 |   20 | 2000-08-30 | M      |  30000 | 9705753172 | Srikakulam    | Manager     | 1133 | S160001 |
+| Polisetti | Pavani          | S160894 |   20 | 2000-07-26 | F      |  40250 | 7382381171 | East godavari | Assistant   | 1211 | S160001 |
+| Tendela   | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada    | Assmanager  | 1133 | S160911 |
+| Pilli     | Lokesh          | S161293 |   18 | 2002-11-26 | M      |  50000 | 9618602121 | Srikakulam    | Manager     | 1133 | S160911 |
+| Gubbala   | Sri satya       | S161500 |   19 | 2001-06-06 | F      |  30000 | 8074489245 | East godavari | Assistant   | 3311 | S160911 |
+| Akkapolu  | Bhavani         | S161965 |   19 | 2001-03-26 | F      |  35000 | 9705753172 | Vizag         | manager     | 2233 | S160911 |
+| Pilli     | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  46000 | 8096929526 | Srikakulam    | Manager     | 1211 | S161966 |
+| Annepu    | Sandhya rani    | S162056 |   19 | 2001-08-21 | F      |  25000 | 8179296404 | Hyderabad     | Assistant   | 1122 | S161966 |
++-----------+-----------------+---------+------+------------+--------+--------+------------+---------------+-------------+------+---------+
+10 rows in set (0.00 sec)
+
+mysql> select *from department;
++------------------+------+---------------+-------------+
+| Dname            | Dnum | starting_data | manager_ssn |
++------------------+------+---------------+-------------+
+| civil            | 1122 | 1995-03-26    | S160001     |
+| mechanical       | 1133 | 1996-09-11    | S160911     |
+| computer science | 1211 | 1999-03-02    | S161966     |
+| chemical         | 2233 | 1996-09-11    | S160032     |
+| Electronic       | 3311 | 1999-03-02    | S161965     |
++------------------+------+---------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select *from project;
++-----------------+-----+-----------+------+
+| Pname           | Pid | Plocation | Dnum |
++-----------------+-----+-----------+------+
+| Big data        | 111 | Hyderabad | 1211 |
+| Robotics        | 112 | Mumbai    | 3311 |
+| Drip irrigation | 113 | Hyderabad | 1122 |
+| AI              | 114 | Delhi     | 1211 |
+| IOT             | 115 | AP        | 1133 |
+| Big data        | 116 | Mumbai    | 3311 |
+| Robotics        | 117 | Hyderabad | 1133 |
+| AI              | 118 | AP        | 3311 |
+| solar           | 119 | chennai   | 1122 |
+| Android         | 120 | Delhi     | 1211 |
++-----------------+-----+-----------+------+
+10 rows in set (0.00 sec)
+
+mysql> select E.* from employee,dependent where Essn=ssn;
+ERROR 1051 (42S02): Unknown table 'E'
+mysql> select E.* from employee E,dependent where Essn=ssn;
++---------+-----------------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+
+| Fname   | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address    | designation | Dnum | sssn    |
++---------+-----------------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+
+| Tendela | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam | Manager     | 1122 | S160001 |
+| Tendela | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam | Manager     | 1122 | S160001 |
+| Tendela | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam | Manager     | 1122 | S160001 |
+| Tendela | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  51750 | 9618602121 | Srikakulam | Manager     | 1211 | S160001 |
+| Tendela | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  51750 | 9618602121 | Srikakulam | Manager     | 1211 | S160001 |
+| Tendela | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada | Assmanager  | 1133 | S160911 |
+| Tendela | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada | Assmanager  | 1133 | S160911 |
+| Pilli   | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  46000 | 8096929526 | Srikakulam | Manager     | 1211 | S161966 |
+| Pilli   | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  46000 | 8096929526 | Srikakulam | Manager     | 1211 | S161966 |
++---------+-----------------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+
+9 rows in set (0.00 sec)
+
+mysql> select *from dependent;
++--------------+---------------+---------+---------+
+| Dep_name     | Dep_address   | Dep_id  | essn    |
++--------------+---------------+---------+---------+
+| Santosh      | srikakulam    | S170001 | S160001 |
+| Santosh      | srikakulam    | S170002 | S160911 |
+| Somesh       | vizag         | S170003 | S161966 |
+| Harika       | vizag         | S170004 | S161966 |
+| vijay kumar  | vijayanagaram | S170005 | S160001 |
+| Lava kumar   | Eluru         | S170006 | S160001 |
+| Padma priya  | Hyderabad     | S170007 | S160911 |
+| Harsha priya | Hyderabad     | S170008 | S160032 |
+| Aruna jyothi | Eluru         | S170009 | S160032 |
++--------------+---------------+---------+---------+
+9 rows in set (0.00 sec)
+
+mysql> select E.* from employee E,dependent where Essn=ssn and distinct by Lname;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'distinct by Lname' at line 1
+
+
+mysql> select E.* from employee E,dependent,department where Essn=manager_ssn and ssn=Essn;
++---------+-----------------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+
+| Fname   | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address    | designation | Dnum | sssn    |
++---------+-----------------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+
+| Tendela | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam | Manager     | 1122 | S160001 |
+| Tendela | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam | Manager     | 1122 | S160001 |
+| Tendela | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam | Manager     | 1122 | S160001 |
+| Tendela | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  51750 | 9618602121 | Srikakulam | Manager     | 1211 | S160001 |
+| Tendela | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  51750 | 9618602121 | Srikakulam | Manager     | 1211 | S160001 |
+| Tendela | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada | Assmanager  | 1133 | S160911 |
+| Tendela | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada | Assmanager  | 1133 | S160911 |
+| Pilli   | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  46000 | 8096929526 | Srikakulam | Manager     | 1211 | S161966 |
+| Pilli   | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  46000 | 8096929526 | Srikakulam | Manager     | 1211 | S161966 |
++---------+-----------------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+
+9 rows in set (0.00 sec)
+
+mysql> select E.*,Dep_name from employee E,dependent,department where Essn=manager_ssn and ssn=Essn;
++---------+-----------------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+--------------+
+| Fname   | Lname           | ssn     | Age  | DOB        | Gender | salary | PHNO       | address    | designation | Dnum | sssn    | Dep_name     |
++---------+-----------------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+--------------+
+| Tendela | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam | Manager     | 1122 | S160001 | Santosh      |
+| Tendela | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam | Manager     | 1122 | S160001 | vijay kumar  |
+| Tendela | Suneetha kumari | S160001 |   25 | 1995-04-20 | F      |  55000 | 9177056721 | Srikakulam | Manager     | 1122 | S160001 | Lava kumar   |
+| Tendela | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  51750 | 9618602121 | Srikakulam | Manager     | 1211 | S160001 | Harsha priya |
+| Tendela | Mohan babu      | S160032 |   21 | 1999-03-02 | M      |  51750 | 9618602121 | Srikakulam | Manager     | 1211 | S160001 | Aruna jyothi |
+| Tendela | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada | Assmanager  | 1133 | S160911 | Santosh      |
+| Tendela | Lokesh          | S160911 |   22 | 1998-09-11 | M      |  30000 | 8096929526 | Vijayawada | Assmanager  | 1133 | S160911 | Padma priya  |
+| Pilli   | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  46000 | 8096929526 | Srikakulam | Manager     | 1211 | S161966 | Somesh       |
+| Pilli   | Priyanka        | S161966 |   19 | 2001-07-04 | F      |  46000 | 8096929526 | Srikakulam | Manager     | 1211 | S161966 | Harika       |
++---------+-----------------+---------+------+------------+--------+--------+------------+------------+-------------+------+---------+--------------+
+9 rows in set (0.00 sec)
+
+mysql> select *from department;
++------------------+------+---------------+-------------+
+| Dname            | Dnum | starting_data | manager_ssn |
++------------------+------+---------------+-------------+
+| civil            | 1122 | 1995-03-26    | S160001     |
+| mechanical       | 1133 | 1996-09-11    | S160911     |
+| computer science | 1211 | 1999-03-02    | S161966     |
+| chemical         | 2233 | 1996-09-11    | S160032     |
+| Electronic       | 3311 | 1999-03-02    | S161965     |
++------------------+------+---------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select *from dependent;
++--------------+---------------+---------+---------+
+| Dep_name     | Dep_address   | Dep_id  | essn    |
++--------------+---------------+---------+---------+
+| Santosh      | srikakulam    | S170001 | S160001 |
+| Santosh      | srikakulam    | S170002 | S160911 |
+| Somesh       | vizag         | S170003 | S161966 |
+| Harika       | vizag         | S170004 | S161966 |
+| vijay kumar  | vijayanagaram | S170005 | S160001 |
+| Lava kumar   | Eluru         | S170006 | S160001 |
+| Padma priya  | Hyderabad     | S170007 | S160911 |
+| Harsha priya | Hyderabad     | S170008 | S160032 |
+| Aruna jyothi | Eluru         | S170009 | S160032 |
++--------------+---------------+---------+---------+
+9 rows in set (0.00 sec)
+
